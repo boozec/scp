@@ -75,15 +75,21 @@ object CoPurchaseAnalysis {
     *   Configured SparkSession instance
     */
   def createSparkSession(appName: String, master: String): SparkSession = {
-    SparkSession.builder
+    var session = SparkSession.builder
       .appName(appName)
       .config("spark.master", master)
-      .config("spark.hadoop.google.cloud.auth.service.account.enable", "true")
-      .config(
-        "spark.hadoop.google.cloud.auth.service.account.json.keyfile",
-        System.getenv("GOOGLE_APPLICATION_CREDENTIALS")
-      )
-      .getOrCreate()
+
+    val creds = System.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+    if (creds != null) {
+      session
+        .config("spark.hadoop.google.cloud.auth.service.account.enable", "true")
+        .config(
+          "spark.hadoop.google.cloud.auth.service.account.json.keyfile",
+          creds
+        )
+    }
+
+    session.getOrCreate()
   }
 
   /** Parses a single line from the input file into an OrderProduct instance.
