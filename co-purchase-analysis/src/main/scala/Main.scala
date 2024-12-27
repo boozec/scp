@@ -60,10 +60,6 @@ object CoPurchaseAnalysis {
   def checkArguments(args: Array[String]): Option[String] = {
     if (args.length != 2) {
       Some("You must define input file and output folder.")
-    } else if (!Files.exists(Paths.get(args(0)))) {
-      Some(s"Input file `${args(0)}` does not exist.")
-    } else if (Files.exists(Paths.get(args(1)))) {
-      Some(s"Output folder `${args(1)}` already exists.")
     } else {
       None
     }
@@ -82,6 +78,11 @@ object CoPurchaseAnalysis {
     SparkSession.builder
       .appName(appName)
       .config("spark.master", master)
+      .config("spark.hadoop.google.cloud.auth.service.account.enable", "true")
+      .config(
+        "spark.hadoop.google.cloud.auth.service.account.json.keyfile",
+        System.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+      )
       .getOrCreate()
   }
 
@@ -108,7 +109,6 @@ object CoPurchaseAnalysis {
     *   combinations
     */
   def generateProductPairs(products: List[Int]): List[ProductPair] = {
-    val sortedProducts = products.sorted
     for {
       i <- products.indices.toList
       j <- (i + 1) until products.length
@@ -133,9 +133,9 @@ object CoPurchaseAnalysis {
 
   /** Processes the order data to generate co-purchase statistics.
     *
-    * The processing pipeline includes:
-    *   1. Grouping orders by orderId 2. Generating product pairs for each order
-    *      3. Counting occurrences of each product pair
+    * The processing pipeline includes: (1) Grouping orders by orderId, (2)
+    * Generating product pairs for each order, (3) Counting occurrences of each
+    * product pair
     *
     * @param data
     *   RDD containing OrderProduct instances
