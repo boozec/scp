@@ -1,4 +1,4 @@
-scalaVersion := "2.12.10"
+scalaVersion := sys.env.getOrElse("SCALA_VERSION", "2.12.10")
 
 name := "co-purchase-analysis"
 organization := "it.unibo.cs.scp"
