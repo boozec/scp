@@ -119,22 +119,11 @@ object CoPurchaseAnalysis {
       i <- products.indices.toList
       j <- (i + 1) until products.length
     } yield {
-      if (products(i) < products(j)) {
-        ProductPair(products(i), products(j))
-      } else {
-        ProductPair(products(j), products(i))
-      }
+      val (p1, p2) =
+        if (products(i) < products(j)) (products(i), products(j))
+        else (products(j), products(i))
+      ProductPair(p1, p2)
     }
-    // val sortedProducts = products.sorted
-    // for {
-    //   i <- sortedProducts.indices.toList
-    //   j <- (i + 1) until sortedProducts.length
-    // } yield {
-    //   val product1 = sortedProducts(i)
-    //   val product2 = sortedProducts(j)
-    //
-    //   ProductPair(product1, product2)
-    // }
   }
 
   /** Processes the order data to generate co-purchase statistics.
