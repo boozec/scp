@@ -58,8 +58,12 @@ To test on Google Cloud, execute the following shell scripts in the given order:
 
 - `scripts/00-create-service-account.sh`
 - `scripts/01-create-bucket.sh`
-- `scripts/02-dataproc-create-cluster.sh`
+- `scripts/02-dataproc-copy-jar.sh`
 - `scripts/03-update-network-for-dataproc.sh`
-- `scripts/04-dataproc-copy-jar.sh`
+- `scripts/04-dataproc-create-cluster.sh`
 - `scripts/05-dataproc-submit.sh`
-- `scripts/06-cleanup.sh`
+- `scripts/06-dataproc-update-cluster.sh`
+- `scripts/07-cleanup.sh`
+
+`04-dataproc-create-cluster.sh` and `06-dataproc-update-cluster.sh` accept one
+argument: the workers number. It can be 1, 2, 3 or 4.
