@@ -18,3 +18,4 @@ project/plugins/project/
 .sbt/
 .bsp/
 project/
+input/order_products.csv
