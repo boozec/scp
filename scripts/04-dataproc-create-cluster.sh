@@ -14,6 +14,19 @@ if [ "$NUM_WORKERS" -lt 1 ] || [ "$NUM_WORKERS" -gt 4 ]; then
     exit 1
 fi
 
+read -p "Enter worker-machine-type: " worker_machine
+
+if [ -z "$worker_machine" ]; then
+    echo "Error: Worker machine type cannot be empty."
+    exit 1
+fi
+
+read -p "Enter master-machine-type: " master_machine
+
+if [ -z "$master_machine" ]; then
+    echo "Error: Master machine type cannot be empty."
+    exit 1
+fi
 
 COMMON_PARAMS="\
     --project=${PROJECT} \
@@ -21,8 +34,8 @@ COMMON_PARAMS="\
     --service-account=${SERVICE_ACCOUNT}@${PROJECT}.iam.gserviceaccount.com \
     --master-boot-disk-size=240 \
     --worker-boot-disk-size=240 \
-    --worker-machine-type=n1-standard-2 \
-    --master-machine-type=n1-standard-2"
+    --worker-machine-type=${worker_machine} \
+    --master-machine-type=${master_machine}"
 
 
 if [ "$NUM_WORKERS" -eq 1 ]; then
