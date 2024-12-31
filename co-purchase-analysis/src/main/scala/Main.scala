@@ -114,15 +114,6 @@ object CoPurchaseAnalysis {
             ProductPair(Math.min(p1, p2), Math.max(p1, p2)) -> 1
         }
       }
-      .foreach(println)
-    data
-      .groupBy(_.orderId)
-      .flatMap { case (_, orders) =>
-        orders.map(_.productId).toSeq.sorted.combinations(2).map {
-          case List(p1, p2) =>
-            ProductPair(Math.min(p1, p2), Math.max(p1, p2)) -> 1
-        }
-      }
       .reduceByKey(_ + _)
       .map { case (ProductPair(product1, product2), count) =>
         s"${product1},${product2},${count}"
