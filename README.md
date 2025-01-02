@@ -67,3 +67,24 @@ To test on Google Cloud, execute the following shell scripts in the given order:
 
 `04-dataproc-create-cluster.sh` and `06-dataproc-update-cluster.sh` accept one
 argument: the workers number. It can be 1, 2, 3 or 4.
+
+Using `06-dataproc-update-cluster.sh` is not recommended if you want to test
+with another machine type. Instead, is better to run:
+
+```
+gcloud dataproc clusters delete ${CLUSTER} --region=${REGION}
+```
+
+Then, run again `scripts/04-dataproc-create-cluster.sh` + `scripts/05-dataproc-submit.sh`.
+
+If you want to check the output on your local machine, execute:
+
+```
+gsutil -m cp -r "gs://${BUCKET_NAME}/output" .
+```
+
+And downloading the data, you can find the max counter using:
+
+```
+cat part-000* | cut -d ',' -f 3 | awk '{if($1>max){max=$1}} END{print max}'
+```
