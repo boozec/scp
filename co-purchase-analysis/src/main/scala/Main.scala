@@ -107,16 +107,13 @@ object CoPurchaseAnalysis {
     *   RDD containing CoPurchase instances with purchase frequency counts
     */
   def processData(data: RDD[OrderProduct]): RDD[String] = {
-    val groups = data
-      .groupBy(_.orderId)
-      .partitionBy(new HashPartitioner(200))
-      .persist()
-
-    val pairs = groups
-      .flatMap { case (_, orders) =>
-        orders.map(_.productId).toSeq.sorted.combinations(2).map {
-          case List(p1, p2) =>
-            ProductPair(Math.min(p1, p2), Math.max(p1, p2)) -> 1
+    val pairs = data
+      .map(order => (order.orderId, order.productId))
+      .groupByKey()
+      .partitionBy(new HashPartitioner(50))
+      .flatMap { case (_, productIds) =>
+        productIds.toSeq.sorted.combinations(2).map { case List(p1, p2) =>
+          ProductPair(Math.min(p1, p2), Math.max(p1, p2)) -> 1
         }
       }
     val coProducts = pairs.reduceByKey(_ + _)
