@@ -2,29 +2,28 @@
 
 set -eu
 
-if [ "$#" -ne 1 ]; then
-    echo "Usage: 'sh ${PWD}/$0 <num-workers>'"
+if [ "$#" -ne 3 ]; then
+    echo "Usage: 'sh ${PWD}/$0 <num-workers> <master-machine> <worker-machine>'"
     exit 1
 fi
 
 
 NUM_WORKERS="$1"
+MASTER_MACHINE="$2"
+WORKER_MACHINE="$3"
+
 if [ "$NUM_WORKERS" -lt 1 ] || [ "$NUM_WORKERS" -gt 4 ]; then
     echo "<num-workers> must be 1, 2, 3, or 4"
     exit 1
 fi
 
-read -p "Enter worker-machine-type: " worker_machine
-
-if [ -z "$worker_machine" ]; then
-    echo "Error: Worker machine type cannot be empty."
+if [ -z "$MASTER_MACHINE" ]; then
+    echo "Error: Master machine type cannot be empty."
     exit 1
 fi
 
-read -p "Enter master-machine-type: " master_machine
-
-if [ -z "$master_machine" ]; then
-    echo "Error: Master machine type cannot be empty."
+if [ -z "$WORKER_MACHINE" ]; then
+    echo "Error: Worker machine type cannot be empty."
     exit 1
 fi
 
@@ -34,9 +33,8 @@ COMMON_PARAMS="\
     --service-account=${SERVICE_ACCOUNT}@${PROJECT}.iam.gserviceaccount.com \
     --master-boot-disk-size=240 \
     --worker-boot-disk-size=240 \
-    --worker-machine-type=${worker_machine} \
-    --master-machine-type=${master_machine}"
-
+    --worker-machine-type=${WORKER_MACHINE} \
+    --master-machine-type=${MASTER_MACHINE}"
 
 if [ "$NUM_WORKERS" -eq 1 ]; then
     echo ">>>> Creating a single-node cluster..."
