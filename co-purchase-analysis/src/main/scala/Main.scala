@@ -1,7 +1,6 @@
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.rdd.RDD
 import org.apache.spark.HashPartitioner
-import java.nio.file.{Paths, Files}
 
 /** A Spark application that analyzes co-purchased products.
   *
