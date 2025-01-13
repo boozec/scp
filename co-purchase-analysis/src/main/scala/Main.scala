@@ -109,12 +109,15 @@ object CoPurchaseAnalysis {
     val pairs = data
       .map(order => (order.orderId, order.productId))
       .groupByKey()
-      .partitionBy(new HashPartitioner(50))
       .flatMap { case (_, productIds) =>
-        productIds.toSeq.sorted.combinations(2).map { case List(p1, p2) =>
-          ProductPair(Math.min(p1, p2), Math.max(p1, p2)) -> 1
-        }
+        val products = productIds.toSeq
+        for {
+          x <- products
+          y <- products if x < y
+        } yield (ProductPair(x, y), 1)
       }
+      .partitionBy(new HashPartitioner(50))
+
     val coProducts = pairs.reduceByKey(_ + _)
 
     coProducts.map { case (ProductPair(product1, product2), count) =>
