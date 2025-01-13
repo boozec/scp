@@ -64,7 +64,7 @@ To test on Google Cloud, execute the following shell scripts in the given order:
 - `scripts/02-dataproc-copy-jar.sh`
 - `scripts/03-update-network-for-dataproc.sh`
 - `scripts/04-dataproc-create-cluster.sh <num-workers> <master-machine> <worker-machine>`
-- `scripts/05-dataproc-submit.sh`
+- `scripts/05-dataproc-submit.sh <num-partitions>`
 - `scripts/06-dataproc-update-cluster.sh <num-workers> <master-machine> <worker-machine>`
 - `scripts/07-cleanup.sh`
 
@@ -93,13 +93,13 @@ $ scripts/00-create-service-account.sh; \
     scripts/02-dataproc-copy-jar.sh; \
     scripts/03-update-network-for-dataproc.sh; \
     scripts/04-dataproc-create-cluster.sh 1 n1-standard-4 n1-standard-4; \
-    scripts/05-dataproc-submit.sh; \
+    scripts/05-dataproc-submit.sh 200; \
     scripts/06-dataproc-update-cluster.sh 2 n1-standard-4 n1-standard-4; \
-    scripts/05-dataproc-submit.sh; \
+    scripts/05-dataproc-submit.sh 200; \
     scripts/06-dataproc-update-cluster.sh 3 n1-standard-4 n1-standard-4; \
-    scripts/05-dataproc-submit.sh; \
+    scripts/05-dataproc-submit.sh 200; \
     scripts/06-dataproc-update-cluster.sh 4 n1-standard-4 n1-standard-4; \
-    scripts/05-dataproc-submit.sh
+    scripts/05-dataproc-submit.sh 200
 ```
 
 After that, you can also check the created 4 jobs.
