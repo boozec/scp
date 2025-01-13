@@ -92,13 +92,13 @@ $ scripts/00-create-service-account.sh; \
     scripts/01-create-bucket.sh; \
     scripts/02-dataproc-copy-jar.sh; \
     scripts/03-update-network-for-dataproc.sh; \
-    scripts/04-dataproc-create-cluster.sh 1 n1-standard-4 e2-highcpu-4; \
+    scripts/04-dataproc-create-cluster.sh 1 n1-standard-4 n1-standard-4; \
     scripts/05-dataproc-submit.sh; \
-    scripts/06-dataproc-update-cluster.sh 2 n1-standard-4 e2-highcpu-4; \
+    scripts/06-dataproc-update-cluster.sh 2 n1-standard-4 n1-standard-4; \
     scripts/05-dataproc-submit.sh; \
-    scripts/06-dataproc-update-cluster.sh 3 n1-standard-4 e2-highcpu-4; \
+    scripts/06-dataproc-update-cluster.sh 3 n1-standard-4 n1-standard-4; \
     scripts/05-dataproc-submit.sh; \
-    scripts/06-dataproc-update-cluster.sh 4 n1-standard-4 e2-highcpu-4; \
+    scripts/06-dataproc-update-cluster.sh 4 n1-standard-4 n1-standard-4; \
     scripts/05-dataproc-submit.sh
 ```
 
