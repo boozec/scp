@@ -11,7 +11,8 @@ The following environment variables need to be set up:
 - `PROJECT=`
 - `BUCKET_NAME=`
 - `CLUSTER=`
-- `REGION=europe-west3`  # This is the only supported region.
+- `REGION=europe-west3`
+- `ZONE=europe-west3-a`
 - `SERVICE_ACCOUNT=`
 - `GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/google-service-account-key.json`
 - `JAVA_OPTS="--add-opens=java.base/java.lang.invoke=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/sun.nio.ch=ALL-UNNAMED"`
@@ -83,11 +84,18 @@ Then, run again `scripts/04-dataproc-create-cluster.sh` + `scripts/05-dataproc-s
 $ export PROJECT=stately-mote-241200-d1
 $ export BUCKET_NAME=scp-boozec-test1
 $ export CLUSTER=scp1
-$ export REGION=europe-west3 # Only supported
+$ export REGION=europe-west3
+$ export ZONE=europe-west3-a
 $ export SERVICE_ACCOUNT=spark-access-scp-boozec
 $ export GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/google-service-account-key.json
 $ export JAVA_OPTS="--add-opens=java.base/java.lang.invoke=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/sun.nio.ch=ALL-UNNAMED"
 $ export SCALA_VERSION=2.13.12
+
+$ gcloud auth login
+$ gcloud config set project $PROJECT
+$ gcloud config set compute/region $REGION
+$ gcloud config set compute/zone $ZONE
+
 $ scripts/00-create-service-account.sh; \
     scripts/01-create-bucket.sh; \
     scripts/02-dataproc-copy-jar.sh; \
