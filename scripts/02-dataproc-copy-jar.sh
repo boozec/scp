@@ -1,5 +1,9 @@
 #!/bin/sh
 
+if [ ${DEBUG:+1} ]; then
+    set -euxo pipefail
+fi
+
 cd ./co-purchase-analysis
 SCALA_VERSION=2.12.10 sbt clean package
 cd -

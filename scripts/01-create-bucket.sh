@@ -1,5 +1,9 @@
 #!/bin/sh
 
+if [ ${DEBUG:+1} ]; then
+    set -exo pipefail
+fi
+
 path="$1"
 
 if [ -z "$path" ] || [ ! -e "$path" ]; then

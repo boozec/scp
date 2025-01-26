@@ -2,6 +2,10 @@
 
 set -eu
 
+if [ ${DEBUG:+1} ]; then
+    set -xo pipefail
+fi
+
 if [ "$#" -ne 3 ]; then
     echo "Usage: 'sh ${PWD}/$0 <num-workers> <master-machine> <worker-machine>'"
     exit 1
@@ -31,8 +35,8 @@ COMMON_PARAMS="\
     --project=${PROJECT} \
     --region=${REGION} \
     --service-account=${SERVICE_ACCOUNT}@${PROJECT}.iam.gserviceaccount.com \
-    --master-boot-disk-size=240 \
-    --worker-boot-disk-size=240 \
+    --master-boot-disk-size=400 \
+    --worker-boot-disk-size=400 \
     --worker-machine-type=${WORKER_MACHINE} \
     --master-machine-type=${MASTER_MACHINE}"
 

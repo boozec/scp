@@ -1,6 +1,10 @@
 #!/bin/sh
 
-set -e
+set -eu
+
+if [ ${DEBUG:+1} ]; then
+    set -xo pipefail
+fi
 
 if [ "$#" -ne 1 ]; then
     echo "Usage: 'sh ${PWD}/$0 <num-partitions>'"

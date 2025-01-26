@@ -1,5 +1,9 @@
 #!/bin/sh
 
+if [ -z $DEBUG ]; then
+    set -euxo pipefail
+fi
+
 gcloud iam service-accounts create ${SERVICE_ACCOUNT} \
     --description="Spark access account to Google Cloud Buckets" \
     --display-name="Spark to Bucket"
