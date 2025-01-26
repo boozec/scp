@@ -149,3 +149,30 @@ $ for JOB in `gcloud dataproc jobs list --region="${REGION}" --format="table(ref
     gcloud dataproc jobs delete --region="${REGION}" $JOB --quiet; \
   done
 ```
+
+### Test weak scaling efficiency
+
+We have a good parameter of testing increasing the input file by n-times. For
+instance, for 2 nodes we can use a doubli-fication of exam's input file.
+
+```
+$ cat order_products.csv order_products.csv >> order_products_twice.csv
+$ ls -l
+.rw-r--r-- santo santo 417 MB Fri Nov 22 12:43:07 2024 📄 order_products.csv
+.rw-r--r-- santo santo 834 MB Mon Jan 13 15:12:13 2025 📄 order_products_twice.csv
+$ wc -l *.csv
+  32434489 order_products.csv
+  64868978 order_products_twice.csv
+$ egrep -n "^2,33120" order_products_twice.csv
+1:2,33120
+32434490:2,33120
+$ scripts/00-create-service-account.sh; \
+    scripts/01-create-bucket.sh ./order_products_twice.csv; \
+    scripts/02-dataproc-copy-jar.sh; \
+    scripts/03-update-network-for-dataproc.sh; \
+    scripts/04-dataproc-create-cluster.sh 2 n1-standard-4 n1-standard-4; \
+    scripts/05-dataproc-submit.sh 200
+```
+
+The given output is what we obtain using 2 work-units for 2 nodes $W(2) =
+\frac{T_1}{T_2}$.
