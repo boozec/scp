@@ -1,7 +1,7 @@
 #!/bin/sh
 
-if [ -z $DEBUG ]; then
-    set -euxo pipefail
+if [ ${DEBUG:+1} ]; then
+    set -exo pipefail
 fi
 
 gcloud iam service-accounts create ${SERVICE_ACCOUNT} \
