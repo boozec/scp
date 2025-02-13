@@ -118,6 +118,7 @@ object CoPurchaseAnalysis {
   ): RDD[String] = {
     val pairs = data
       .map(order => (order.orderId, order.productId))
+      .partitionBy(new HashPartitioner(partitionsNumber))
       .groupByKey()
       .flatMap { case (_, productIds) =>
         val products = productIds.toSeq
@@ -130,9 +131,12 @@ object CoPurchaseAnalysis {
 
     val coProducts = pairs.reduceByKey(_ + _)
 
-    coProducts.map { case (ProductPair(product1, product2), count) =>
-      s"${product1},${product2},${count}"
+    val result = coProducts.map {
+      case (ProductPair(product1, product2), count) =>
+        s"${product1},${product2},${count}"
     }
+
+    result.repartition(1)
   }
 
   /** Main entry point for the application.
