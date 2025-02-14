@@ -41,10 +41,10 @@ $ sbt
 sbt:co-purchase-analysis> run input/ output/
 ```
 
-The above commands will generate three files in the output/ folder that can be merged:
+The above commands will generate two files in the output/ folder that can be merged:
 
 ```bash
-$ cat output/_SUCCESS output/part-00000 output/part-00001
+$ cat output/_SUCCESS output/part-00000
 8,14,2
 12,16,1
 14,16,1
@@ -101,13 +101,13 @@ $ scripts/00-create-service-account.sh; \
     scripts/02-dataproc-copy-jar.sh; \
     scripts/03-update-network-for-dataproc.sh; \
     scripts/04-dataproc-create-cluster.sh 1 n1-standard-4 n1-standard-4; \
-    scripts/05-dataproc-submit.sh 200; \
+    scripts/05-dataproc-submit.sh; \
     scripts/06-dataproc-update-cluster.sh 2 n1-standard-4 n1-standard-4; \
-    scripts/05-dataproc-submit.sh 200; \
+    scripts/05-dataproc-submit.sh; \
     scripts/06-dataproc-update-cluster.sh 3 n1-standard-4 n1-standard-4; \
-    scripts/05-dataproc-submit.sh 200; \
+    scripts/05-dataproc-submit.sh; \
     scripts/06-dataproc-update-cluster.sh 4 n1-standard-4 n1-standard-4; \
-    scripts/05-dataproc-submit.sh 200
+    scripts/05-dataproc-submit.sh
 ```
 
 After that, you can also check the created 4 jobs.

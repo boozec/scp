@@ -6,12 +6,6 @@ if [ ${DEBUG:+1} ]; then
     set -xo pipefail
 fi
 
-if [ "$#" -ne 1 ]; then
-    echo "Usage: 'sh ${PWD}/$0 <num-partitions>'"
-    exit 1
-fi
-
-NUM_PARTITIONS="$1"
 INPUT_PATH="gs://${BUCKET_NAME}/input/"
 OUTPUT_PATH="gs://${BUCKET_NAME}/output"
 
@@ -45,4 +39,4 @@ gcloud dataproc jobs submit spark \
     --jar="gs://${BUCKET_NAME}/scala/co-purchase-analysis_2.12-1.0.jar" \
     --region="${REGION}" \
     --properties="spark.hadoop.fs.gs.impl=com.google.cloud.hadoop.fs.gcs.GoogleHadoopFileSystem" \
-    -- "${INPUT_PATH}" "${OUTPUT_PATH}" "${NUM_PARTITIONS}"
+    -- "${INPUT_PATH}" "${OUTPUT_PATH}"
