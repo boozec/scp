@@ -11,8 +11,8 @@ The following environment variables need to be set up:
 - `PROJECT=`
 - `BUCKET_NAME=`
 - `CLUSTER=`
-- `REGION=europe-west3`
-- `ZONE=europe-west3-a`
+- `REGION=europe-west2`
+- `ZONE=europe-west2-a`
 - `SERVICE_ACCOUNT=`
 - `GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/google-service-account-key.json`
 - `JAVA_OPTS="--add-opens=java.base/java.lang.invoke=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/sun.nio.ch=ALL-UNNAMED"`
@@ -37,8 +37,8 @@ To run the local test:
 
 ```bash
 $ cd co-purchase-analysis
-$ sbt
-sbt:co-purchase-analysis> run input/ output/
+$ sbt clean package
+$ spark-submit target/scala-2.13/co-purchase-analysis_2.13-1.0.jar ./input/sample1.csv output
 ```
 
 The above commands will generate two files in the output/ folder that can be merged:
@@ -65,7 +65,7 @@ To test on Google Cloud, execute the following shell scripts in the given order:
 - `scripts/02-dataproc-copy-jar.sh`
 - `scripts/03-update-network-for-dataproc.sh`
 - `scripts/04-dataproc-create-cluster.sh <num-workers> <master-machine> <worker-machine>`
-- `scripts/05-dataproc-submit.sh <num-partitions>`
+- `scripts/05-dataproc-submit.sh`
 - `scripts/06-dataproc-update-cluster.sh <num-workers> <master-machine> <worker-machine>`
 - `scripts/07-cleanup.sh`
 
@@ -84,8 +84,8 @@ Then, run again `scripts/04-dataproc-create-cluster.sh` + `scripts/05-dataproc-s
 $ export PROJECT=stately-mote-241200-d1
 $ export BUCKET_NAME=scp-boozec-test1
 $ export CLUSTER=scp1
-$ export REGION=europe-west3
-$ export ZONE=europe-west3-a
+$ export REGION=europe-west2
+$ export ZONE=europe-west2-a
 $ export SERVICE_ACCOUNT=spark-access-scp-boozec
 $ export GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/google-service-account-key.json
 $ export JAVA_OPTS="--add-opens=java.base/java.lang.invoke=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/sun.nio.ch=ALL-UNNAMED"
@@ -152,7 +152,7 @@ $ for JOB in `gcloud dataproc jobs list --region="${REGION}" --format="table(ref
 
 ### Test weak scaling efficiency
 
-We have a good parameter of testing increasing the input file by n-times. For
+We can have a good testing increasing the input file by n-times. For
 instance, for 2 nodes we can use a doubli-fication of exam's input file.
 
 ```
@@ -171,8 +171,8 @@ $ scripts/00-create-service-account.sh; \
     scripts/02-dataproc-copy-jar.sh; \
     scripts/03-update-network-for-dataproc.sh; \
     scripts/04-dataproc-create-cluster.sh 2 n1-standard-4 n1-standard-4; \
-    scripts/05-dataproc-submit.sh 200
+    scripts/05-dataproc-submit.sh
 ```
 
-The given output is what we obtain using 2 work-units for 2 nodes $W(2) =
+The given performance can be used as "2 work-units for 2 nodes", $W(2) =
 \frac{T_1}{T_2}$.
