@@ -153,11 +153,11 @@ object CoPurchaseAnalysis {
         .map(parseLine)
 
       val cores = spark.conf.get("spark.executor.cores", "4").toInt
-      val nodes = spark.conf.get("spark.executor.instance", "4").toInt
-      val partitinosNumber =
+      val nodes = spark.conf.get("spark.executor.instances", "4").toInt
+      val partitionsNumber =
         math.max(cores * nodes * 2, spark.sparkContext.defaultParallelism * 2)
 
-      val result = processData(inputRDD, partitinosNumber)
+      val result = processData(inputRDD, partitionsNumber)
         .saveAsTextFile(config("outputPath"))
     } finally {
       spark.stop()
